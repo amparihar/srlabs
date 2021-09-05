@@ -6,7 +6,7 @@
 
 
 {{- define "web-pod-selector-labels" -}}
-app: pictures
+app: nginx
 tier: web
 app.kubernetes.io/name: {{ include "chart-name" $ }}
 app.kubernetes.io/instance: {{ $.Release.Name}}
