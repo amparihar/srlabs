@@ -28,3 +28,5 @@ override.tf.json
 # Include tfplan files 
 
 node_modules
+
+**/tmp/*

@@ -24,6 +24,7 @@ resource "aws_iam_role_policy_attachment" "AmazonEKSClusterCloudWatchPolicy" {
 
 # eks fargate pod execution role
 resource "aws_iam_role" "eks_fargate_pod_execution_iam_role" {
+  name               = "EKSFargatePodExecutionRole"
   assume_role_policy = data.aws_iam_policy_document.eks_fargate_pod_execution_role_assume_role_iam_policy.json
 }
 
