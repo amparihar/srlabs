@@ -1,62 +1,44 @@
-{{/*
-Expand the name of the chart.
-*/}}
-{{- define "nginx-blue.name" -}}
-{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
+
+
+{{- define "chart-name" -}}
+{{- default .Chart.Name | trim | trunc 63 }}
 {{- end }}
 
-{{/*
-Create a default fully qualified app name.
-We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
-If release name contains chart name it will be used as a full name.
-*/}}
-{{- define "nginx-blue.fullname" -}}
-{{- if .Values.fullnameOverride }}
-{{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
-{{- else }}
-{{- $name := default .Chart.Name .Values.nameOverride }}
-{{- if contains $name .Release.Name }}
-{{- .Release.Name | trunc 63 | trimSuffix "-" }}
-{{- else }}
-{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" }}
-{{- end }}
-{{- end }}
+
+{{- define "web-pod-selector-labels" -}}
+app: pictures
+tier: web
+app.kubernetes.io/name: {{ include "chart-name" $ }}
+app.kubernetes.io/instance: {{ $.Release.Name}}
 {{- end }}
 
-{{/*
-Create chart name and version as used by the chart label.
-*/}}
-{{- define "nginx-blue.chart" -}}
-{{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
+{{- define "web-container-ports" -}}
+{{- range $.Values.image.ports -}}
+- name: {{ .name }}
+  containerPort: {{ .containerPort | default 80 }}
+  protocol: {{ .protocol | default "tcp" }}
+{{- end }}
+{{- end}}
+
+{{- define "web-container-resources" -}}
+resources:
+  limits:
+    cpu: {{ .Values.resources.limits.cpu }}
+    memory: {{ .Values.resources.limits.memory }}
+  requests:
+    cpu: {{ .Values.resources.requests.cpu }}
+    memory: {{ .Values.resources.requests.memory }}
 {{- end }}
 
-{{/*
-Common labels
-*/}}
-{{- define "nginx-blue.labels" -}}
-helm.sh/chart: {{ include "nginx-blue.chart" . }}
-{{ include "nginx-blue.selectorLabels" . }}
-{{- if .Chart.AppVersion }}
-app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- define "service-ports" -}}
+{{- range $.Values.service.ports -}}
+- name: {{ .name }}
+  port: {{ .port | default 80 }}
+  {{- if .targetPort }}
+  targetPort: {{ .targetPort }}
+  {{- end }}
+  {{- if .nodePort }}
+  nodePort: {{ .nodePort }}
+  {{- end}}
 {{- end }}
-app.kubernetes.io/managed-by: {{ .Release.Service }}
-{{- end }}
-
-{{/*
-Selector labels
-*/}}
-{{- define "nginx-blue.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "nginx-blue.name" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
-{{- end }}
-
-{{/*
-Create the name of the service account to use
-*/}}
-{{- define "nginx-blue.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "nginx-blue.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
-{{- end }}
-{{- end }}
+{{- end}}

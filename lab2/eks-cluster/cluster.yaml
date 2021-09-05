@@ -2,7 +2,7 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
 metadata:
-  name: nginx-lab2-kluster
+  name: nginx-kluster
   region: us-east-2
 
 
