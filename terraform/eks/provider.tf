@@ -88,7 +88,7 @@ module "default_fargate_profile" {
   cluster_name           = module.cluster.eks_cluster_name
   subnet_ids             = module.vpc.private_subnet_ids
   pod_execution_role_arn = module.iam.eks_fargate_pod_execution_iam_role_arn
-  selectors              = [{ namespace = "default" }, { namespace = "calculator" }, { namespace = "bookinfo" }, { namespace = "todos" }]
+  selectors              = [{ namespace = "default" }]
 }
 
 output "default_fargate_profile_id" {
@@ -113,7 +113,7 @@ module "core_fargate_profile" {
     { namespace = "appmesh-system" },
     { namespace = "aws-observability" }
   ]
-  # selectors            = [{ namespace = "kube-system", labels = { k8s-app = "kube-dns" } }]
+
 }
 
 output "core_fargate_profile_id" {
@@ -122,4 +122,19 @@ output "core_fargate_profile_id" {
 
 output "core_fargate_profile_status" {
   value = module.core_fargate_profile.status
+}
+
+module "app_fargate_profile" {
+  source                 = "./fargate"
+  app_name               = var.app_name
+  stage_name             = var.stage_name
+  profile_name           = "fp-app"
+  cluster_name           = module.cluster.eks_cluster_name
+  subnet_ids             = module.vpc.private_subnet_ids
+  pod_execution_role_arn = module.iam.eks_fargate_pod_execution_iam_role_arn
+  selectors              = [{ namespace = "nginx-ns" }]
+}
+
+output "app_fargate_profile_id" {
+  value = module.app_fargate_profile.id
 }
