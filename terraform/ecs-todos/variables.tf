@@ -4,7 +4,7 @@ variable "app_name" {
 }
 variable "stage_name" {
   type    = string
-  default = "sr-vlabs"
+  default = "StackRouteVLabs"
 }
 
 variable "aws_region" {

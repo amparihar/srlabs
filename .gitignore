@@ -30,3 +30,4 @@ override.tf.json
 node_modules
 
 **/tmp/*
+*.tfvars
