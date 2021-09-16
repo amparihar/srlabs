@@ -1,6 +1,6 @@
 variable "app_name" {
   type    = string
-  default = "nginx"
+  default = "ecs-gs"
 }
 variable "stage_name" {
   type    = string

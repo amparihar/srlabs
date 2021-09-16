@@ -50,6 +50,6 @@ variable "container_ports" {
 variable "container_images" {
   type = map(string)
   default = {
-    front_end_microservice        = ""
+    front_end_microservice        = "aparihar/nginx-ecs-gs:latest"
   }
 }
