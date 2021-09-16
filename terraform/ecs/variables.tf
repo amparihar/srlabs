@@ -1,10 +1,10 @@
 variable "app_name" {
   type    = string
-  default = "mytodos"
+  default = "nginx"
 }
 variable "stage_name" {
   type    = string
-  default = "StackRouteVLabs"
+  default = "vlabs"
 }
 
 variable "aws_region" {
@@ -14,18 +14,16 @@ variable "aws_region" {
 variable "aws_regions" {
   type = map(string)
   default = {
-    ohio = "us-east-2"
+    ohio   = "us-east-2"
   }
 }
 variable "ecs_cluster_name" {
   type        = string
   description = "Name of the ECS Cluster (up to 255 letters, numbers, hyphens, and underscores)"
-  default     = "mytodos-cluster"
+  default     = "lab3-kluster"
   validation {
     condition     = length(var.ecs_cluster_name) > 0
-    error_message = "Cluster Name is required."
+    error_message = "ECS Cluster Name is required."
   }
 }
-variable "jwt_access_token" {
-  type = string
-}
+
