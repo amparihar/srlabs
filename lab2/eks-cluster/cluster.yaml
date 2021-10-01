@@ -3,6 +3,7 @@ kind: ClusterConfig
 
 metadata:
   name: nginx-lab2-kluster
+  version: 1.19
   region: us-east-2
 
 
